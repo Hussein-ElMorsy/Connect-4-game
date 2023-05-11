@@ -1,7 +1,13 @@
+import sys
+
 import numpy as np
+import pygame
 
 rowCtr = 6
 colCtr = 7
+
+blue = (0, 0, 255)
+black = (0, 0, 0)
 
 
 def createBoard():
@@ -60,28 +66,58 @@ def printBoard(board):
     print(np.flip(board, 0))
 
 
+def drawBoard(board):
+    for c in range(colCtr):
+        for r in range(rowCtr):
+            pygame.draw.rect(screen, blue, (c * squareSize, r * squareSize + squareSize, squareSize, squareSize))
+            pygame.draw.circle(screen, black,
+                               (
+                                   int(c * squareSize + squareSize / 2),
+                                   int(r * squareSize + squareSize + squareSize / 2)),
+                               radius)
+
+
 board = createBoard()
 gameOver = False
 turn = 0
 
+pygame.init()
+
+squareSize = 100
+width = colCtr * squareSize
+height = (1 + rowCtr) * squareSize
+
+size = (width, height)
+
+radius = int(squareSize / 2 - 5)
+
+screen = pygame.display.set_mode(size)
+drawBoard(board)
+pygame.display.update()
+
 while not gameOver:
-    # Player1 turn
-    if turn == 0:
-        col = int(input("Player1 make your move (0-6):"))
-        move(board, col, 1)
-        if winningMove(board, 1):
-            print("Player1 wins!!!")
-            gameOver = True
 
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            continue
+            # Player1 turn
+            if turn == 0:
+                col = int(input("Player1 make your move (0-6):"))
+                move(board, col, 1)
+                if winningMove(board, 1):
+                    print("Player1 wins!!!")
+                    gameOver = True
 
-    # Player2 turn
-    else:
-        col = int(input("Player2 make your move (0-6):"))
-        move(board, col, 2)
-        if winningMove(board, 2):
-            print("Player2 wins!!!")
-            gameOver = True
+            # Player2 turn
+            else:
+                col = int(input("Player2 make your move (0-6):"))
+                move(board, col, 2)
+                if winningMove(board, 2):
+                    print("Player2 wins!!!")
+                    gameOver = True
 
-    printBoard(board)
+            printBoard(board)
 
-    turn = not turn
+            turn = not turn
