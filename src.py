@@ -1,3 +1,4 @@
+import math
 import sys
 
 import numpy as np
@@ -8,6 +9,8 @@ colCtr = 7
 
 blue = (0, 0, 255)
 black = (0, 0, 0)
+red = (255, 0, 0)
+yellow = (255, 255, 0)
 
 
 def createBoard():
@@ -75,6 +78,22 @@ def drawBoard(board):
                                    int(c * squareSize + squareSize / 2),
                                    int(r * squareSize + squareSize + squareSize / 2)),
                                radius)
+    for c in range(colCtr):
+        for r in range(rowCtr):
+            if board[r][c] == 1:
+                pygame.draw.circle(screen, red,
+                                   (
+                                       int(c * squareSize + squareSize / 2),
+                                       height - int(r * squareSize + squareSize / 2)),
+                                   radius)
+            elif board[r][c] == 2:
+                pygame.draw.circle(screen, yellow,
+                                   (
+                                       int(c * squareSize + squareSize / 2),
+                                       height - int(r * squareSize + squareSize / 2)),
+                                   radius)
+
+    pygame.display.update()
 
 
 board = createBoard()
@@ -95,29 +114,45 @@ screen = pygame.display.set_mode(size)
 drawBoard(board)
 pygame.display.update()
 
+myFont = pygame.font.SysFont("monospace", 75)
+
 while not gameOver:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+        if event.type == pygame.MOUSEMOTION:
+            pygame.draw.rect(screen, black, (0, 0, width, squareSize))
+            posx = event.pos[0]
+            if turn == 0:
+                pygame.draw.circle(screen, red, (posx, int(squareSize / 2)), radius)
+            else:
+                pygame.draw.circle(screen, yellow, (posx, int(squareSize / 2)), radius)
+            pygame.display.update()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            continue
+            pygame.draw.rect(screen, black, (0, 0, width, squareSize))
             # Player1 turn
             if turn == 0:
-                col = int(input("Player1 make your move (0-6):"))
+                posx = event.pos[0]
+                col = int(math.floor(posx / squareSize))
                 move(board, col, 1)
                 if winningMove(board, 1):
-                    print("Player1 wins!!!")
+                    label = myFont.render("Player1 wins!!!", 1, red)
+                    screen.blit(label, (40, 10))
                     gameOver = True
 
             # Player2 turn
             else:
-                col = int(input("Player2 make your move (0-6):"))
+                posx = event.pos[0]
+                col = int(math.floor(posx / squareSize))
                 move(board, col, 2)
                 if winningMove(board, 2):
-                    print("Player2 wins!!!")
+                    label = myFont.render("Player2 wins!!!", 1, yellow)
+                    screen.blit(label, (40, 10))
                     gameOver = True
 
             printBoard(board)
-
+            drawBoard(board)
             turn = not turn
+            if gameOver:
+                pygame.time.wait(4000)
