@@ -115,6 +115,49 @@ def positionScore(board, piece):
     return score
 
 
+def isTerminalNode(board):
+    return winningMove(board, playerPiece) or winningMove(board, AIPiece) or len(getValidLocations(board)) == 0
+
+
+def miniMax(board, depth, maxPlayer):
+    validLoc = getValidLocations(board)
+    isTerminal = isTerminalNode(board)
+    if depth == 0 or isTerminal:
+        if isTerminal:
+            if winningMove(board, AIPiece):
+                return (None, 100000000000000)
+            elif winningMove(board, playerPiece):
+                return (None, -100000000000000)
+            else:  # game over no more moves
+                return (None, 0)
+        else:  # depth is zero
+            return (None, positionScore(board, AIPiece))
+    if maxPlayer:
+        value = -math.inf
+        bestColumn = random.choice(validLoc)
+        for col in validLoc:
+            row = getNextOpenRow(board, col)
+            boardCopy = board.copy()
+            dropPiece(boardCopy, row, col, AIPiece)
+            newScore = miniMax(boardCopy, depth - 1, False)[1]
+            if newScore > value:
+                value = newScore
+                bestColumn = col
+        return bestColumn, value
+    else:
+        value = math.inf
+        bestColumn = random.choice(validLoc)
+        for col in validLoc:
+            row = getNextOpenRow(board, col)
+            boardCopy = board.copy()
+            dropPiece(boardCopy, row, col, playerPiece)
+            newScore = miniMax(boardCopy, depth - 1, True)[1]
+            if newScore < value:
+                value = newScore
+                bestColumn = col
+        return bestColumn, value
+
+
 def getValidLocations(board):
     validLocation = []
     for c in range(colCtr):
@@ -221,7 +264,7 @@ while not gameOver:
 
         # Player2 turn
         if turn == AI and not gameOver:
-            col = pickBestMove(board, AIPiece)
+            col, minMaxScore = miniMax(board, 4, True)
             if isValid(board, col):
                 pygame.time.wait(500)
                 row = getNextOpenRow(board, col)
