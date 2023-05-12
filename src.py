@@ -74,11 +74,11 @@ def evaluateWindow(window, piece):
     if window.count(piece) == 4:
         score += 100
     elif window.count(piece) == 3 and window.count(empty) == 1:
-        score += 10
-    elif window.count(piece) == 2 and window.count(empty) == 2:
         score += 5
+    elif window.count(piece) == 2 and window.count(empty) == 2:
+        score += 2
     if window.count(opPiece) == 3 and window.count(empty) == 1:
-        score -= 80
+        score -= 4
     return score
 
 
@@ -87,7 +87,7 @@ def positionScore(board, piece):
     # center column score
     centerArray = [int(i) for i in list(board[:, colCtr // 2])]
     centerCtr = centerArray.count(piece)
-    score += centerCtr * 6
+    score += centerCtr * 3
 
     # Horizonal score
     for r in range(rowCtr):
@@ -119,7 +119,7 @@ def isTerminalNode(board):
     return winningMove(board, playerPiece) or winningMove(board, AIPiece) or len(getValidLocations(board)) == 0
 
 
-def miniMax(board, depth, maxPlayer):
+def miniMax(board, depth, alpha, beta, maxPlayer):
     validLoc = getValidLocations(board)
     isTerminal = isTerminalNode(board)
     if depth == 0 or isTerminal:
@@ -139,10 +139,13 @@ def miniMax(board, depth, maxPlayer):
             row = getNextOpenRow(board, col)
             boardCopy = board.copy()
             dropPiece(boardCopy, row, col, AIPiece)
-            newScore = miniMax(boardCopy, depth - 1, False)[1]
+            newScore = miniMax(boardCopy, depth - 1, alpha, beta, False)[1]
             if newScore > value:
                 value = newScore
                 bestColumn = col
+            alpha = max(alpha, value)
+            if alpha >= beta:
+                break
         return bestColumn, value
     else:
         value = math.inf
@@ -151,10 +154,13 @@ def miniMax(board, depth, maxPlayer):
             row = getNextOpenRow(board, col)
             boardCopy = board.copy()
             dropPiece(boardCopy, row, col, playerPiece)
-            newScore = miniMax(boardCopy, depth - 1, True)[1]
+            newScore = miniMax(boardCopy, depth - 1, alpha, beta, True)[1]
             if newScore < value:
                 value = newScore
                 bestColumn = col
+            beta = min(beta, value)
+            if alpha >= beta:
+                break
         return bestColumn, value
 
 
@@ -264,9 +270,8 @@ while not gameOver:
 
         # Player2 turn
         if turn == AI and not gameOver:
-            col, minMaxScore = miniMax(board, 4, True)
+            col, minMaxScore = miniMax(board, 5, -math.inf, math.inf, True)
             if isValid(board, col):
-                pygame.time.wait(500)
                 row = getNextOpenRow(board, col)
                 dropPiece(board, row, col, AIPiece)
                 if winningMove(board, AIPiece):
