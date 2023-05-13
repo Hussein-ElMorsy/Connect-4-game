@@ -14,10 +14,10 @@ AI = 1
 playerPiece = 1
 AIPiece = 2
 
-blue = (0, 0, 255)
+blue = (0, 0, 100)
 black = (0, 0, 0)
 red = (255, 0, 0)
-yellow = (255, 255, 0)
+green = (0, 255, 0)
 
 
 def createBoard():
@@ -209,7 +209,7 @@ def drawBoard(board):
                                        height - int(r * squareSize + squareSize / 2)),
                                    radius)
             elif board[r][c] == 2:
-                pygame.draw.circle(screen, yellow,
+                pygame.draw.circle(screen, green,
                                    (
                                        int(c * squareSize + squareSize / 2),
                                        height - int(r * squareSize + squareSize / 2)),
@@ -232,6 +232,8 @@ size = (width, height)
 radius = int(squareSize / 2 - 5)
 
 screen = pygame.display.set_mode(size)
+# Set the window title
+pygame.display.set_caption("Connect Four")
 drawBoard(board)
 pygame.display.update()
 
@@ -275,7 +277,7 @@ while not gameOver:
                 row = getNextOpenRow(board, col)
                 dropPiece(board, row, col, AIPiece)
                 if winningMove(board, AIPiece):
-                    label = myFont.render("Player2 wins!!!", 1, yellow)
+                    label = myFont.render("Player2 wins!!!", 1, green)
                     screen.blit(label, (40, 10))
                     gameOver = True
                 turn = not turn
