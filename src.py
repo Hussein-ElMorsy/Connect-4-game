@@ -20,7 +20,7 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 
 pygame.init()
-winSound = pygame.mixer.Sound('winningSound\win.mp3')
+winSound = pygame.mixer.Sound('soundEffects\win.mp3')
 
 
 def createBoard():
