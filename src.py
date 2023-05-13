@@ -15,7 +15,7 @@ playerPiece = 1
 AIPiece = 2
 
 blue = (0, 0, 100)
-black = (0, 0, 0)
+white = (255, 255, 255)
 red = (255, 0, 0)
 green = (0, 255, 0)
 
@@ -198,7 +198,7 @@ def drawBoard(board):
     for c in range(colCtr):
         for r in range(rowCtr):
             pygame.draw.rect(screen, blue, (c * squareSize, r * squareSize + squareSize, squareSize, squareSize))
-            pygame.draw.circle(screen, black,
+            pygame.draw.circle(screen, white,
                                (
                                    int(c * squareSize + squareSize / 2),
                                    int(r * squareSize + squareSize + squareSize / 2)),
@@ -250,14 +250,14 @@ while not gameOver:
         if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.MOUSEMOTION:
-            pygame.draw.rect(screen, black, (0, 0, width, squareSize))
+            pygame.draw.rect(screen, white, (0, 0, width, squareSize))
             posx = event.pos[0]
             if turn == player:
                 pygame.draw.circle(screen, red, (posx, int(squareSize / 2)), radius)
 
         pygame.display.update()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pygame.draw.rect(screen, black, (0, 0, width, squareSize))
+            pygame.draw.rect(screen, white, (0, 0, width, squareSize))
             # Player1 turn
             if turn == player:
                 posx = event.pos[0]
