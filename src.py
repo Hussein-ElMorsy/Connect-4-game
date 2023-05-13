@@ -19,6 +19,9 @@ black = (0, 0, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
 
+pygame.init()
+winSound = pygame.mixer.Sound('winningSound\win.mp3')
+
 
 def createBoard():
     board = np.zeros((rowCtr, colCtr))
@@ -285,4 +288,6 @@ while not gameOver:
                 drawBoard(board)
 
         if gameOver:
+            winSound.set_volume(0.5)  # sets the volume to 50%
+            winSound.play()
             pygame.time.wait(4000)
