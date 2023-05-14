@@ -248,7 +248,7 @@ while not gameOver:
 
     # Player1 turn
     if turn == computer:
-        pygame.time.wait(2500)
+        pygame.time.wait(1500)
         col = random.randint(0, 6)
         if isValid(board, col):
             row = getNextOpenRow(board, col)
@@ -263,8 +263,8 @@ while not gameOver:
 
     # Player2 turn
     if turn == AI and not gameOver:
-        pygame.time.wait(500)
-        col, minMaxScore = miniMax(board, 7, -math.inf, math.inf, True)
+        pygame.time.wait(200)
+        col, minMaxScore = miniMax(board, 6, -math.inf, math.inf, True)
         if isValid(board, col):
             row = getNextOpenRow(board, col)
             dropPiece(board, row, col, AIPiece)

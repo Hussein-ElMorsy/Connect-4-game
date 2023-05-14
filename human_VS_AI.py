@@ -275,7 +275,7 @@ while not gameOver:
 
         # Player2 turn
         if turn == AI and not gameOver:
-            col, minMaxScore = miniMax(board, 7, -math.inf, math.inf, True)
+            col, minMaxScore = miniMax(board, 6, -math.inf, math.inf, True)
             if isValid(board, col):
                 row = getNextOpenRow(board, col)
                 dropPiece(board, row, col, AIPiece)
