@@ -53,12 +53,20 @@ def main():
         elif level == 2:
             depth = 3
         else:
-            depth = 6
+            depth = 8
         if option == 1:
-            col, bestScore = fun.minimax(new_board, depth, True)
-            board.select_column(col)
+            while True:
+                col, bestScore = fun.alpha_beta(new_board, depth, -math.inf, math.inf, True)
+                if fun.is_valid_location(new_board, col):
+                    row = fun.get_next_open_row(new_board, col)
+                    board.select_column(col)
+                    if fun.winning_move(new_board, fun.AI_PIECE):
+                        game_end = True
+                    break
+
         else:
             col, bestScore = fun.alpha_beta(new_board, depth, -math.inf, math.inf, True)
+            print(col)
             board.select_column(col)
         time.sleep(2)
 
