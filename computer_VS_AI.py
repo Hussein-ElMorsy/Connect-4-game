@@ -14,13 +14,13 @@ AI = 1
 computerPiece = 1
 AIPiece = 2
 
-black = (0, 0, 0)
+blue = (0, 0, 255)
 white = (255, 255, 255)
 red = (255, 0, 0)
-green = (0, 255, 0)
+yellow = (255, 255, 0)
 
 pygame.init()
-winSound = pygame.mixer.Sound('soundEffects\win.mp3')
+#winSound = pygame.mixer.Sound('soundEffects\win.mp3')
 
 
 def createBoard():
@@ -197,7 +197,7 @@ def printBoard(board):
 def drawBoard(board):
     for c in range(colCtr):
         for r in range(rowCtr):
-            pygame.draw.rect(screen, black, (c * squareSize, r * squareSize + squareSize, squareSize, squareSize))
+            pygame.draw.rect(screen, blue, (c * squareSize, r * squareSize + squareSize, squareSize, squareSize))
             pygame.draw.circle(screen, white,
                                (
                                    int(c * squareSize + squareSize / 2),
@@ -212,7 +212,7 @@ def drawBoard(board):
                                        height - int(r * squareSize + squareSize / 2)),
                                    radius)
             elif board[r][c] == 2:
-                pygame.draw.circle(screen, green,
+                pygame.draw.circle(screen, yellow,
                                    (
                                        int(c * squareSize + squareSize / 2),
                                        height - int(r * squareSize + squareSize / 2)),
@@ -269,7 +269,7 @@ while not gameOver:
             row = getNextOpenRow(board, col)
             dropPiece(board, row, col, AIPiece)
             if winningMove(board, AIPiece):
-                label = myFont.render("Player 2 wins!!!", 1, green)
+                label = myFont.render("Player 2 wins!!!", 1, yellow)
                 screen.blit(label, (40, 10))
                 gameOver = True
             turn = not turn
