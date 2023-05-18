@@ -59,7 +59,8 @@ def main():
                 col, bestScore = fun.alpha_beta(new_board, depth, -math.inf, math.inf, True)
                 if fun.is_valid_location(new_board, col):
                     row = fun.get_next_open_row(new_board, col)
-                    board.select_column(col)
+                    fun.drop_piece(new_board, row, col, fun.AI_PIECE)
+                    # board.select_column(col)
                     if fun.winning_move(new_board, fun.AI_PIECE):
                         game_end = True
                     break
