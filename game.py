@@ -14,7 +14,7 @@ import numpy as np
 def main():
     board = Board()
 
-    print("1 (miniMax algorithm")
+    print("1 (miniMax algorithm)")
     print("2 (alpha beta pruning)")
     print("Choose which algorithm to use: ", end=" \t")
     option = input()
@@ -53,7 +53,7 @@ def main():
         elif level == 2:
             depth = 3
         else:
-            depth = 8
+            depth = 6
         if option == 1:
             while True:
                 col, bestScore = fun.alpha_beta(new_board, depth, -math.inf, math.inf, True)
